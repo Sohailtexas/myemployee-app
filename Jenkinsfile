@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = "sammu.azurecr.io/myemployee-app:v
+        IMAGE_NAME = "sammu.azurecr.io/myemployee-app:v1"
     }
 
     stages {
