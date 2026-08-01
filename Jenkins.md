@@ -23,3 +23,32 @@ sudo systemctl status jenkins
 ## Initial Password
 
 sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+
+
+
+## code
+
+pipeline {
+    agent any 
+
+    environment {
+        IMAGE_NAME = "sammu.azurecr.io/myemployee:v1"
+    }  
+    stages {
+        stage('Build') {
+            steps {
+                sh 'docker build -t $IMAGE_NAME .'
+            }
+        }
+
+        stage('push') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'acr-credentials', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
+                    sh 'echo $PASS | docker login sammu.azurecr.io -u $USER --password-stdin'
+                    sh 'docker push $IMAGE_NAME'
+                }
+            }
+        }        
+    }
+}
+         
